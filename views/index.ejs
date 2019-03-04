@@ -35,21 +35,15 @@
 </head>
 <body>
     <script>
-        $('#m').val('New Text');
-        M.textareaAutoResize($('#m'));
-        var blendShapes = {"eyeL": 0, "eyeR": 0, "faceDir": 0};
+        var blendShapes = {};
+
         $(function () {
             var socket = io();
             socket.emit('client_to_server_join', 1);
+            console.log("joined")
 
-            socket.on('chat message', function (array) { //サーバーサイド(app.js)から受け取ったmsgの表示
-                blendShapes = JSON.parse(array);
-                print(array)
-                // if (id == 0) {
-                //     $('#messages').prepend($('<li>').html(msg + '<br>' + date + '<div class="divider"></div>'));
-                // } else {
-                //     $('#messages').prepend($('<li>').html(msg + '<br>' + date + '<div class="divider"></div>'));
-                // }
+            socket.on('chat message', function (array) { // from app.js emit()
+                blendShapes = JSON.parse(array)
             });
         });
 
@@ -88,10 +82,6 @@
 
             loader.load( '/src/vrm/Alicia/VRM/AliciaSolid.vrm', function ( vrm ) {
 
-                console.log(vrm.scene.children[4]);
-                console.log(vrm.scene.children[2].skeleton);
-                vrm.scene.children[4].quaternion["_y"] = -0.5;
-                // console.log(vrm.scene.children[8]);
                 // VRMLoader doesn't support VRM Unlit extension yet so
                 // converting all materials to MeshBasicMaterial here as workaround so far.
                 vrm.scene.traverse( function ( object ) {
@@ -162,10 +152,10 @@
 
         function animate() { //frame更新毎に呼ばれる
             if(scene.children[1]) {
+                console.log(blendShapes)
                 scene.children[1].children[2].skeleton.bones[0].quaternion["_y"] = blendShapes.eyeL; //eye_L
                 scene.children[1].children[2].skeleton.bones[1].quaternion["_y"] = blendShapes.eyeR; //eye_R
-                console.log(scene.children[1].children[2].skeleton.bones[0].quaternion["_y"]);
-                // scene.children[1].children[2].skeleton.bones[0].quaternion["_y"] += 0.001
+                scene.children[1].children[4].quaternion["_y"] = blendShapes.faceDir;
             }
 
             requestAnimationFrame( animate );
