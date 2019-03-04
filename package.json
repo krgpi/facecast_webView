@@ -1,5 +1,5 @@
 {
-  "name": "face",
+  "name": "facecast",
   "version": "1.0.0",
   "description": "iOS App",
   "main": "app.js",
@@ -13,6 +13,7 @@
     "express": "^4.16.4",
     "express-session": "^1.15.6",
     "morgan": "^1.9.1",
-    "socket.io": "^2.2.0"
+    "socket.io": "^2.2.0",
+    "three": "^0.102.1"
   }
 }

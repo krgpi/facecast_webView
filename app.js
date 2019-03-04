@@ -5,13 +5,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 
-var moment = require('moment');
-moment.locale('ja');
-
-function now() { //現在時刻をDBの形式と合う形で出力
-    return moment().format('YYYY-MM-DD HH:mm:ss');
-}
-
 //ポート番号指定とsocketioの設定
 var app = express();
 var server = app.listen(3001);
@@ -56,7 +49,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //node_modules依存関係ルーティング設定
 app.use('/socket.io',express.static(__dirname + '/node_modules/socket.io-client/dist'));
-app.use('/momentjs',express.static(__dirname + '/node_modeles/moment'));
 app.use('/three', express.static(__dirname + '/node_modules/three'));
 
 app.use('/src', express.static(__dirname + '/../src'));
