@@ -1,8 +1,8 @@
 # facecast_webView
-iPhoneからVtube配信を行うことを目標とした、iOS, Webアプリを一体開発しています。
+
+iPhoneからVtube配信を行うことを目標としたアプリ、**facecast(仮)** をiOS配信アプリ, Webビューワーアプリの両方で一体開発しています。
 
 ## システム概要
-### facecast(仮)
 
 iOSのARkit(FaceTracking)で、顔のblendshapesを取得
 
