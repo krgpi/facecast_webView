@@ -28,7 +28,6 @@ io.on('connection', function(socket){
     });
 
     socket.on('chat message', function(array){
-        console.log("received" + array);
         io.to("1").emit('chat message', array);
     });
 
