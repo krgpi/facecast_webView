@@ -37,17 +37,19 @@
     <script>
         $('#m').val('New Text');
         M.textareaAutoResize($('#m'));
-
+        var blendShapes = {"eyeL": 0, "eyeR": 0, "faceDir": 0};
         $(function () {
             var socket = io();
-            socket.emit('client_to_server_join', 0);
+            socket.emit('client_to_server_join', 1);
 
-            socket.on('chat message', function (id, name, msg, date) { //サーバーサイド(app.js)から受け取ったmsgの表示
-                if (id == 0) {
-                    $('#messages').prepend($('<li>').html(msg + '<br>' + date + '<div class="divider"></div>'));
-                } else {
-                    $('#messages').prepend($('<li>').html(msg + '<br>' + date + '<div class="divider"></div>'));
-                }
+            socket.on('chat message', function (array) { //サーバーサイド(app.js)から受け取ったmsgの表示
+                blendShapes = JSON.parse(array);
+                print(array)
+                // if (id == 0) {
+                //     $('#messages').prepend($('<li>').html(msg + '<br>' + date + '<div class="divider"></div>'));
+                // } else {
+                //     $('#messages').prepend($('<li>').html(msg + '<br>' + date + '<div class="divider"></div>'));
+                // }
             });
         });
 
@@ -86,14 +88,17 @@
 
             loader.load( '/src/vrm/Alicia/VRM/AliciaSolid.vrm', function ( vrm ) {
 
-                console.log(vrm.blendShape)
-                vrm.BlendShapeMerger.SetValue(BlendShapePreset.Blink, 0)
+                console.log(vrm.scene.children[4]);
+                console.log(vrm.scene.children[2].skeleton);
+                vrm.scene.children[4].quaternion["_y"] = -0.5;
+                // console.log(vrm.scene.children[8]);
                 // VRMLoader doesn't support VRM Unlit extension yet so
                 // converting all materials to MeshBasicMaterial here as workaround so far.
                 vrm.scene.traverse( function ( object ) {
 
-                    if ( object.material ) {
 
+                    if ( object.material ) {
+                                // console.log(object.children);
                         if ( Array.isArray( object.material ) ) {
 
                             for ( var i = 0, il = object.material.length; i < il; i ++ ) {
@@ -143,7 +148,6 @@
             // stats
             stats = new Stats();
             container.appendChild( stats.dom );
-
         }
 
         function onWindowResize() {
@@ -157,6 +161,12 @@
 
 
         function animate() { //frame更新毎に呼ばれる
+            if(scene.children[1]) {
+                scene.children[1].children[2].skeleton.bones[0].quaternion["_y"] = blendShapes.eyeL; //eye_L
+                scene.children[1].children[2].skeleton.bones[1].quaternion["_y"] = blendShapes.eyeR; //eye_R
+                console.log(scene.children[1].children[2].skeleton.bones[0].quaternion["_y"]);
+                // scene.children[1].children[2].skeleton.bones[0].quaternion["_y"] += 0.001
+            }
 
             requestAnimationFrame( animate );
 

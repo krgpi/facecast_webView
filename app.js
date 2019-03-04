@@ -24,12 +24,11 @@ io.on('connection', function(socket){
     socket.on('client_to_server_join', function(num){
         gid = num;
         socket.join(String(num));
-        console.log('joined to '+num);
-        io.to(String(socket.id)).emit('chat message',0,'サーバー', '接続完了',now());
+        console.log('joined to '+ num);
     });
 
-    socket.on('chat message', function(msg,user){
-        io.to(String(socket.id)).emit('chat message', 0, 'サーバー', msg, now());
+    socket.on('chat message', function(array){
+        io.to(String(socket.id)).emit('chat message', 1, array);
     });
 
     socket.on('disconnect', function(){
