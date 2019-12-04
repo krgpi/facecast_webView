@@ -48,13 +48,14 @@ class renderer {
         // model
         var loader = new GLTFLoader();
 
-        loader.load('/src/AliciaSolid.vrm', (gltf) => {
-            THREE.VRM.from(gltf).then((vrm) => {
-                this.scene.add(vrm.scene);
-            })
-        }, (error) => {
-            // console.log(error)
-        });
+        loader.load('/src/AliciaSolid.vrm',
+            (gltf) => {
+                THREE.VRM.from(gltf).then((vrm) => {
+                    this.scene.add(vrm.scene);
+                })
+            },
+            (progress) => console.log('Loading model...', 100.0 * (progress.loaded / progress.total), '%'),
+            (error) => console.error(error))
 
         this.renderer.setClearColor(0xEEEEEE);
         this.renderer.setPixelRatio(window.devicePixelRatio);
