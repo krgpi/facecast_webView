@@ -11,20 +11,20 @@ var server = app.listen(3001);
 var io = require('socket.io').listen(server);
 
 //socketio
-io.on('connection', function(socket){
+io.on('connection', function (socket) {
     console.log('a user connected : ' + socket.id);
     var gid = 0;
-    socket.on('client_to_server_join', function(num){
+    socket.on('client_to_server_join', function (num) {
         gid = num;
         socket.join(String(num));
-        console.log('joined to '+ num);
+        console.log('joined to ' + num);
     });
 
-    socket.on('chat message', function(array){
+    socket.on('chat message', function (array) {
         io.to("1").emit('chat message', array);
     });
 
-    socket.on('disconnect', function(){
+    socket.on('disconnect', function () {
         console.log('a user disconnected');
     });
 
@@ -48,10 +48,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //node_modules依存関係ルーティング設定
-app.use('/socket.io',express.static(__dirname + '/node_modules/socket.io-client/dist'));
-app.use('/three', express.static(__dirname + '/node_modules/three'));
-
-app.use('/src', express.static(__dirname + '/../src'));
+app.use('/node_modules', express.static(__dirname + '/node_modules'));
+app.use('/src', express.static(__dirname + '/src'));
+app.use('/', express.static(__dirname));
 
 //なんかのクッキーと証明書発行
 app.use(session({
@@ -59,13 +58,13 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure:false, maxAge: 30 * 60 * 1000
+        secure: false, maxAge: 30 * 60 * 1000
     }
 }));
 
 /// catch 404 and forwarding to error handler
-app.use(function(req, res, next) {
-    var err = new Error('Not Found' + req + res );
+app.use(function (req, res, next) {
+    var err = new Error('Not Found' + req + res);
     err.status = 404;
     next(err);
 });
@@ -75,7 +74,7 @@ app.use(function(req, res, next) {
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-    app.use(function(err, req, res, next) {
+    app.use(function (err, req, res, next) {
         res.status(err.status || 500);
         res.render('error', {
             message: err.message,
@@ -86,7 +85,7 @@ if (app.get('env') === 'development') {
 
 // production error handler
 // no stacktraces leaked to user
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
         message: err.message,

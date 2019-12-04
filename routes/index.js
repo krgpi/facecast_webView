@@ -7,8 +7,7 @@ moment.locale('ja');
 /* GET home page. */
 router.get('/', function (req, res) {
 
-    console.log("index js loaded")
-    res.render('index');
+    // res.render('index');
 
 });
 
