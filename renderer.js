@@ -3,7 +3,7 @@ import { GLTFLoader } from './node_modules/three/examples/jsm/loaders/GLTFLoader
 import './src/three-vrm.js';
 // import WebGL from './node_modules/three/examples/jsm/WebGL.js';
 import { OrbitControls } from './node_modules/three/examples/jsm/controls/OrbitControls.js'
-// import { PerspectiveCamera } from '/node_modules/three/examples/jsm/controls/PerspectiveCamera.js'
+
 // () => {
 //     var socket = io();
 //     socket.emit('client_to_server_join', 1);
