@@ -18,9 +18,9 @@ class renderer {
     constructor() {
         this.blendShapes = {}
         this.scene = new THREE.Scene()
-        this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.25, 20)
+        this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.3, 200)
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
-        this.init()
+        window.addEventListener('load', this.init());
     }
     blendShapes
     camera
@@ -28,26 +28,28 @@ class renderer {
     renderer
     light
     init() {
-        var container, stats, controls;
+        var container, controls;
         // if (WEBGL.isWebGLAvailable() === false) {
         //     document.body.appendChild(WEBGL.getWebGLErrorMessage());
         // }
         container = document.createElement('div');
         document.body.appendChild(container);
 
-        this.camera.position.set(0, 1.6, 0.2);
+        this.renderer.setClearColor(0xEEEEEE);
+        this.renderer.setPixelRatio(window.devicePixelRatio);
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.gammaOutput = true;
 
-        // controls = new OrbitControls(this.camera);
-        // controls.target.set(0, 0.9, 0);
-        // controls.update();
+        this.camera.position.set(0, 2.6, -2.6);
+        this.camera.lookAt(new THREE.Vector3(0, 0, 0));
+        this.scene.add(this.camera)
 
-        this.rlight = new THREE.HemisphereLight(0xbbbbff, 0x444422);
-        this.rlight.position.set(0, 1, 0);
-        this.scene.add(this.rlight);
+        const light = new THREE.AmbientLight(0xFFFFFF, 1.0);
+        this.scene.add(light);
 
         // model
-        var loader = new GLTFLoader();
 
+        var loader = new GLTFLoader();
         loader.load('/src/AliciaSolid.vrm',
             (gltf) => {
                 THREE.VRM.from(gltf).then((vrm) => {
@@ -57,21 +59,19 @@ class renderer {
             (progress) => console.log('Loading model...', 100.0 * (progress.loaded / progress.total), '%'),
             (error) => console.error(error))
 
-        this.renderer.setClearColor(0xEEEEEE);
-        this.renderer.setPixelRatio(window.devicePixelRatio);
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.renderer.gammaOutput = true;
+        controls = new OrbitControls(this.camera, this.renderer.domElement);
+        controls.target.set(0, 0.9, 0);
+        controls.update();
+
         container.appendChild(this.renderer.domElement);
 
-        window.addEventListener('resize', this.onWindowResize, false);
-
+        window.addEventListener('resize', this.onWindowResize(this.camera, this.renderer), false);
         this.animate(this.scene, this.camera)
     }
-    onWindowResize() {
-        this.camera.aspect = window.innerWidth / window.innerHeight;
-        this.camera.updateProjectionMatrix();
-
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
+    onWindowResize(camera, renderer) {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
     }
     animate(scene, camera) {
         // // frame更新毎に呼ばれる
@@ -80,10 +80,8 @@ class renderer {
         //     scene.children[1].children[2].skeleton.bones[1].quaternion["_y"] = blendShapes.eyeR; //eye_R
         //     scene.children[1].children[4].quaternion["_y"] = blendShapes.faceDir;
         // }
-
-        // requestAnimationFrame(this.animate(scene, camera));
-
         this.renderer.render(scene, camera);
+        requestAnimationFrame(() => this.animate(scene, camera));
     }
 }
 
