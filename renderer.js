@@ -1,7 +1,6 @@
 import './src/three.min.js';
 import { GLTFLoader } from './node_modules/three/examples/jsm/loaders/GLTFLoader.js';
 import './src/three-vrm.js';
-// import WebGL from './node_modules/three/examples/jsm/WebGL.js';
 import { OrbitControls } from './node_modules/three/examples/jsm/controls/OrbitControls.js'
 
 // () => {
@@ -29,9 +28,6 @@ class renderer {
     light
     init() {
         var container, controls;
-        // if (WEBGL.isWebGLAvailable() === false) {
-        //     document.body.appendChild(WEBGL.getWebGLErrorMessage());
-        // }
         container = document.createElement('div');
         document.body.appendChild(container);
 
