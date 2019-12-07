@@ -1,7 +1,7 @@
 import './src/three.min.js';
 import { GLTFLoader } from './node_modules/three/examples/jsm/loaders/GLTFLoader.js';
-import './src/three-vrm.js';
 import { OrbitControls } from './node_modules/three/examples/jsm/controls/OrbitControls.js'
+import './src/three-vrm.js';
 
 // () => {
 //     var socket = io();
