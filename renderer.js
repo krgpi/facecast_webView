@@ -40,7 +40,8 @@ class renderer {
         this.camera.lookAt(new THREE.Vector3(0, 0, 0));
         this.scene.add(this.camera)
 
-        const light = new THREE.AmbientLight(0xFFFFFF, 1.0);
+        const light = new THREE.DirectionalLight(0xffffff);
+        light.position.set(1, 1, 1).normalize();
         this.scene.add(light);
 
         // model
