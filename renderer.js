@@ -3,16 +3,6 @@ import { GLTFLoader } from './node_modules/three/examples/jsm/loaders/GLTFLoader
 import { OrbitControls } from './node_modules/three/examples/jsm/controls/OrbitControls.js'
 import './src/three-vrm.js';
 
-// () => {
-//     var socket = io();
-//     socket.emit('client_to_server_join', 1);
-//     onsole.log("joined")
-
-//     socket.on('chat message', function (array) { // from app.js emit()
-//         blendShapes = JSON.parse(array)
-//     });
-// };
-
 class renderer {
     constructor() {
         this.blendShapes = {}
@@ -27,6 +17,14 @@ class renderer {
     renderer
     light
     init() {
+        //     var socket = io();
+        //     socket.emit('client_to_server_join', 1);
+        //     console.log("joined")
+
+        //     socket.on('chat message', function (array) { // from app.js emit()
+        //         blendShapes = JSON.parse(array)
+        //     });
+
         var container, controls;
         container = document.createElement('div');
         document.body.appendChild(container);
